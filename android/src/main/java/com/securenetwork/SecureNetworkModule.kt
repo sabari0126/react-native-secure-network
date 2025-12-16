@@ -1,20 +1,33 @@
 package com.securenetwork
 
+import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.WritableMap
 import com.facebook.react.module.annotations.ReactModule
+import com.securenetwork.utils.toResponse
+import com.securenetwork.utils.toWritableMap
+import com.securenetwork.wifi.WifiSecurityChecker
 
-@ReactModule(name = SecureNetworkModule.NAME)
 class SecureNetworkModule(reactContext: ReactApplicationContext) :
-  NativeSecureNetworkSpec(reactContext) {
+  SecureNetworkSpec(reactContext) {
+
+  private val wifiChecker = WifiSecurityChecker(reactContext)
 
   override fun getName(): String {
     return NAME
   }
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  override fun multiply(a: Double, b: Double): Double {
-    return a * b
+  @ReactMethod
+  override fun getConnectionStatus(promise: Promise) {
+    try {
+      wifiChecker.getNetworkStatus { networkResult ->
+        val map: WritableMap = networkResult.toResponse().toWritableMap()
+        promise.resolve(map)
+      }
+    } catch (e: Exception) {
+      promise.reject(e)
+    }
   }
 
   companion object {

@@ -2,16 +2,11 @@
   "name": "react-native-secure-network",
   "version": "0.1.0",
   "description": "react-native-secure-network is a simple and reliable React Native library designed to assess the security of the device’s active network connection. It identifies whether the network is Wi-Fi or mobile data, checks if the Wi-Fi network is open or protected, and inspects the encryption type (such as WPA/WPA2). This allows developers to block or warn users when their device is connected to an insecure network.",
-  "main": "./lib/module/index.js",
-  "types": "./lib/typescript/src/index.d.ts",
-  "exports": {
-    ".": {
-      "source": "./src/index.tsx",
-      "types": "./lib/typescript/src/index.d.ts",
-      "default": "./lib/module/index.js"
-    },
-    "./package.json": "./package.json"
-  },
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
+  "types": "lib/typescript/src/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
   "files": [
     "src",
     "lib",
@@ -43,13 +38,17 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "network",
+    "wifi",
+    "security",
+    "internet"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sabari0126/react-native-secure-network.git"
   },
-  "author": "sabari <sabarisree0126@gmail.com> (https://github.com/sabari0126)",
+  "author": "sabari (https://github.com/sabari0126)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sabari0126/react-native-secure-network/issues"
@@ -91,37 +90,16 @@
     "example"
   ],
   "packageManager": "yarn@4.11.0",
-  "react-native-builder-bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      [
-        "module",
-        {
-          "esm": true
-        }
-      ],
-      [
-        "typescript",
-        {
-          "project": "tsconfig.build.json"
-        }
-      ]
-    ]
-  },
-  "codegenConfig": {
-    "name": "SecureNetworkSpec",
-    "type": "modules",
-    "jsSrcsDir": "src",
-    "android": {
-      "javaPackageName": "com.securenetwork"
-    }
-  },
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
     ]
   },
   "release-it": {
@@ -143,11 +121,29 @@
       }
     }
   },
-  "commitlint": {
+  "eslintConfig": {
+    "root": true,
     "extends": [
-      "@commitlint/config-conventional"
-    ]
+      "@react-native-community",
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "quoteProps": "consistent",
+          "singleQuote": true,
+          "tabWidth": 2,
+          "trailingComma": "es5",
+          "useTabs": false
+        }
+      ]
+    }
   },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ],
   "prettier": {
     "quoteProps": "consistent",
     "singleQuote": true,
@@ -155,15 +151,27 @@
     "trailingComma": "es5",
     "useTabs": false
   },
-  "create-react-native-library": {
-    "type": "turbo-module",
-    "languages": "kotlin-objc",
-    "tools": [
-      "jest",
-      "release-it",
-      "lefthook",
-      "eslint"
-    ],
-    "version": "0.56.0"
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "codegenConfig": {
+    "name": "SecureNetworkSpec",
+    "type": "modules",
+    "jsSrcsDir": "src"
   }
 }

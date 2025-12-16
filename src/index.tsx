@@ -1,5 +1,33 @@
-import SecureNetwork from './NativeSecureNetwork';
+import { NativeModules } from 'react-native';
 
-export function multiply(a: number, b: number): number {
-  return SecureNetwork.multiply(a, b);
+const LINKING_ERROR =
+  `The package 'react-native-network-security' doesn't seem to be linked. Make sure: \n\n` +
+  '- You rebuilt the app after installing the package\n' +
+  '- You are not using Expo Go\n';
+
+// @ts-expect-error
+const isTurboModuleEnabled = global.__turboModuleProxy != null;
+
+const SecureNetworkModule = isTurboModuleEnabled
+  ? require('./NativeSecureNetwork').default
+  : NativeModules.SecureNetwork;
+
+const SecureNetwork = SecureNetworkModule
+  ? SecureNetworkModule
+  : new Proxy(
+      {},
+      {
+        get() {
+          throw new Error(LINKING_ERROR);
+        },
+      }
+    );
+
+function getConnectionStatus(): Promise<object> {
+  return SecureNetwork.getConnectionStatus();
 }
+const Network = {
+  getConnectionStatus,
+};
+
+export default Network;
