@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+import type { NetworkSecurityResult } from './utils/types';
 
 const LINKING_ERROR =
   `The package 'react-native-network-security' doesn't seem to be linked. Make sure: \n\n` +
@@ -23,7 +24,7 @@ const SecureNetwork = SecureNetworkModule
       }
     );
 
-function getConnectionStatus(): Promise<object> {
+function getConnectionStatus(): Promise<NetworkSecurityResult> {
   return SecureNetwork.getConnectionStatus();
 }
 const Network = {
