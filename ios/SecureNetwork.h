@@ -3,7 +3,7 @@
 
 #ifdef RCT_NEW_ARCH_ENABLED
 
-#import <SecureNetworkSpec/SecureNetworkSpec.h>
+#import "SecureNetworkSpec.h"
 @interface SecureNetwork : NSObject <NativeSecureNetworkSpec>
 @end
 
