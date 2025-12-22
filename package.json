@@ -1,6 +1,6 @@
 {
   "name": "react-native-secure-network",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "react-native-secure-network is a simple and reliable React Native library designed to assess the security of the device’s active network connection. It identifies whether the network is Wi-Fi or mobile data, checks if the Wi-Fi network is open or protected, and inspects the encryption type (such as WPA/WPA2). This allows developers to block or warn users when their device is connected to an insecure network.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
