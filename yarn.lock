@@ -10066,6 +10066,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-permissions@npm:^5.4.4":
+  version: 5.4.4
+  resolution: "react-native-permissions@npm:5.4.4"
+  peerDependencies:
+    react: ">=18.1.0"
+    react-native: ">=0.70.0"
+    react-native-windows: ">=0.70.0"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 10c0/9a4fa223053db242a66c18303a525e7552e849876e927427485b0e799f46131ccbbd1ad85e6dfac146d12af942a77a95caa8649b9f4ebcfbb7f2ff6dd8fece04
+  languageName: node
+  linkType: hard
+
 "react-native-secure-network-example@workspace:example":
   version: 0.0.0-use.local
   resolution: "react-native-secure-network-example@workspace:example"
@@ -10084,6 +10098,7 @@ __metadata:
     react-native: "npm:0.83.0"
     react-native-builder-bob: "npm:^0.40.13"
     react-native-monorepo-config: "npm:^0.3.1"
+    react-native-permissions: "npm:^5.4.4"
   languageName: unknown
   linkType: soft
 
