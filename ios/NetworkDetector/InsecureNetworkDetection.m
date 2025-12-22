@@ -62,14 +62,6 @@
             return;
         }
 
-        // Check if network is open/unsecured
-        if (!network.isSecure) {
-            result = [[NetworkSecurityResult alloc] initWithIsSecureNetwork:NO
-                                                                    message:@"Connected to an open/unsecured Wi-Fi network. Please consider using a secure Wi-Fi network."];
-            dispatch_semaphore_signal(semaphore);
-            return;
-        }
-
         // Check for weak security types (iOS 15+ only)
         if (@available(iOS 15.0, *)) {
             NEHotspotNetworkSecurityType securityType = network.securityType;

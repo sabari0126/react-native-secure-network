@@ -5,13 +5,11 @@
 ## 📦 Installation
 
 **NPM:**
-
 ```bash
 npm install react-native-secure-network
 ```
 
 **Yarn:**
-
 ```bash
 yarn add react-native-secure-network
 ```
@@ -19,7 +17,6 @@ yarn add react-native-secure-network
 ## 🚀 Usage
 
 Import the react-native-secure-network library:
-
 ```typescript
 import Network from 'react-native-secure-network';
 ```
@@ -27,7 +24,6 @@ import Network from 'react-native-secure-network';
 > **Note:** This library provides only promise-based functions.
 
 ### Using Promises
-
 ```typescript
 Network.getConnectionStatus()
   .then((response) => {
@@ -41,7 +37,6 @@ Network.getConnectionStatus()
 ```
 
 ### Using Async/Await
-
 ```typescript
 async function checkNetwork() {
   try {
@@ -68,13 +63,11 @@ async function checkNetwork() {
 Checks the security status of the device's current network connection.
 
 **Usage:**
-
 ```typescript
 const response = await Network.getConnectionStatus();
 ```
 
 **Response Object:**
-
 ```typescript
 {
   isSecureNetwork: boolean;
@@ -96,11 +89,33 @@ const response = await Network.getConnectionStatus();
 |     `true`      | Wi-Fi information is unavailable                   |
 |     `true`      | Connected to a secure Wi-Fi network                |
 
-## 🔐 Android Permissions
+## 🔐 Permissions
+
+### Android Permissions
+
+Add these permissions to your `AndroidManifest.xml`:
 
 - [<span style="color: #cb3837;">`ACCESS_WIFI_STATE`</span>](https://developer.android.com/reference/android/Manifest.permission#ACCESS_WIFI_STATE)
 - [<span style="color: #cb3837;">`ACCESS_NETWORK_STATE`</span>](https://developer.android.com/reference/android/Manifest.permission#ACCESS_NETWORK_STATE)
 - [<span style="color: #cb3837;">`ACCESS_FINE_LOCATION`</span>](https://developer.android.com/reference/android/Manifest.permission#ACCESS_FINE_LOCATION)
+
+### iOS Permissions
+
+Add these entries to your `Info.plist`:
+```xml
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Location permission is required to check Wi-Fi network security</string>
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>Location permission is required to check Wi-Fi network security</string>
+```
+
+Additionally, enable the **Access WiFi Information** capability in your Xcode project:
+
+1. Open your project in Xcode
+2. Select your target
+3. Go to **Signing & Capabilities**
+4. Click **+ Capability**
+5. Add **Access WiFi Information**
 
 ## ⚠️ Important Notes
 
