@@ -68,10 +68,10 @@ class WifiSecurityChecker(private val context: Context) {
 
         when {
           checkOpenNetwork(caps) -> NetworkResult.WIFI_UNSECURED_OPEN
-          has(caps, WEP) -> NetworkResult.WIFI_UNSECURED_WEP
-          has(caps, WPS) -> NetworkResult.WIFI_UNSECURED_WPS
           has(caps, WPA2) || has(caps, WPA3) -> NetworkResult.WIFI_SECURE_NETWORK
           has(caps, WPA) -> NetworkResult.WIFI_UNSECURED_WPA
+          has(caps, WEP) -> NetworkResult.WIFI_UNSECURED_WEP
+          has(caps, WPS) -> NetworkResult.WIFI_UNSECURED_WPS
           else -> NetworkResult.WIFI_INFO_UNAVAILABLE
         }
       } else {
