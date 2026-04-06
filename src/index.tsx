@@ -1,5 +1,7 @@
 import { NativeModules } from 'react-native';
 import type { NetworkSecurityResult } from './utils/types';
+export { ResponseCode } from './utils/types';
+export type { NetworkSecurityResult } from './utils/types';
 
 const LINKING_ERROR =
   `The package 'react-native-network-security' doesn't seem to be linked. Make sure: \n\n` +

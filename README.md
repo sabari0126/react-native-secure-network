@@ -18,7 +18,7 @@ yarn add react-native-secure-network
 
 Import the react-native-secure-network library:
 ```typescript
-import Network from 'react-native-secure-network';
+import Network, { ResponseCode } from 'react-native-secure-network';
 ```
 
 > **Note:** This library provides only promise-based functions.
@@ -41,10 +41,25 @@ Network.getConnectionStatus()
 async function checkNetwork() {
   try {
     const response = await Network.getConnectionStatus();
-    // Handle success
-    console.log(response);
+    
+    switch (response.code) {
+      case ResponseCode.WIFI_SECURE:
+        // Safe to proceed
+        break;
+      case ResponseCode.WIFI_UNSECURED_OPEN:
+      case ResponseCode.WIFI_UNSECURED_WEP:
+      case ResponseCode.WIFI_UNSECURED_WPA:
+        // Warn the user about insecure network
+        console.warn(response.message);
+        break;
+      case ResponseCode.PERMISSION_DENIED:
+      case ResponseCode.PERMISSION_NOT_DETERMINED:
+        // Prompt the user for location permission
+        break;
+      default:
+        console.log(response.message);
+    }
   } catch (error) {
-    // Handle errors
     console.error(error);
   }
 }
@@ -72,22 +87,31 @@ const response = await Network.getConnectionStatus();
 {
   isSecureNetwork: boolean;
   message: string;
+  code: ResponseCode;
 }
 ```
 
-**Possible Responses:**
+**Response Codes:**
 
-| Security Status | Message                                            |
-| :-------------: | -------------------------------------------------- |
-|     `false`     | Location permission denied                         |
-|     `false`     | Location services are disabled                     |
-|     `false`     | Connected to an unsecured open Wi-Fi network       |
-|     `false`     | Connected to a weak security Wi-Fi network (WEP)   |
-|     `false`     | Connected to a Wi-Fi network using insecure WPS    |
-|     `false`     | Connected to a weak security Wi-Fi network (WPA-1) |
-|     `true`      | Using mobile data or not connected to Wi-Fi        |
-|     `true`      | Wi-Fi information is unavailable                   |
-|     `true`      | Connected to a secure Wi-Fi network                |
+Each response includes a unique numeric `code` to differentiate between outcomes:
+
+- **7xxx** — Secure / safe responses (`isSecureNetwork: true`)
+- **9xxx** — Insecure / unknown responses (`isSecureNetwork: false`)
+
+| Code | Enum                        | `isSecureNetwork` | Platform | Message                                            |
+| ---- | --------------------------- | :---------------: | :------: | -------------------------------------------------- |
+| 7001 | `WIFI_SECURE`               |      `true`       |   Both   | Connected to a secure Wi-Fi network                |
+| 7002 | `WIFI_NOT_CONNECTED`        |      `true`       | Android  | Using mobile data or not connected to Wi-Fi        |
+| 7003 | `WIFI_INFO_UNAVAILABLE`     |      `true`       |   Both   | Wi-Fi information is unavailable                   |
+| 7004 | `UNKNOWN`                   |      `true`       |   iOS    | Unable to determine network security status        |
+| 9001 | `WIFI_UNSECURED_OPEN`       |      `false`      |   Both   | Connected to an unsecured open Wi-Fi network       |
+| 9002 | `WIFI_UNSECURED_WEP`        |      `false`      | Android  | Connected to a weak security Wi-Fi network (WEP)   |
+| 9003 | `WIFI_UNSECURED_WPS`        |      `false`      | Android  | Connected to a Wi-Fi network using insecure WPS    |
+| 9004 | `WIFI_UNSECURED_WPA`        |      `false`      | Android  | Connected to a weak security Wi-Fi network (WPA-1) |
+| 9005 | `PERMISSION_DENIED`         |      `false`      | Android  | Location permission denied                         |
+| 9006 | `LOCATION_SERVICES_DISABLED`|      `false`      | Android  | Location services are disabled                     |
+| 9007 | `PERMISSION_NOT_DETERMINED` |      `false`      |   iOS    | Location permission required for network analysis  |
+| 9008 | `UNSUPPORTED_OS_VERSION`    |      `false`      |   iOS    | iOS version does not support network security checks |
 
 ## 🔐 Permissions
 

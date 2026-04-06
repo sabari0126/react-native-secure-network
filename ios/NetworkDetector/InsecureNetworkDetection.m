@@ -4,11 +4,12 @@
 
 @implementation NetworkSecurityResult
 
-- (instancetype)initWithIsSecureNetwork:(BOOL)isSecureNetwork message:(NSString *)message {
+- (instancetype)initWithIsSecureNetwork:(BOOL)isSecureNetwork message:(NSString *)message code:(NSInteger)code {
     self = [super init];
     if (self) {
         _isSecureNetwork = isSecureNetwork;
         _message = message;
+        _code = code;
     }
     return self;
 }
@@ -37,16 +38,18 @@
 - (nullable NetworkSecurityResult *)checkNetworkSecurity {
     // Check location permission first
     if (![self hasLocationPermission]) {
-        return [[NetworkSecurityResult alloc] initWithIsSecureNetwork:YES
-                                                              message:@"Location permission required for network security analysis."];
+        return [[NetworkSecurityResult alloc] initWithIsSecureNetwork:NO
+                                                              message:@"Location permission required for network security analysis."
+                                                                code:9007];
     }
 
     // Check iOS version compatibility
     if (@available(iOS 14.0, *)) {
         return [self checkNetworkSecurityWithHotspotNetwork];
     } else {
-        return [[NetworkSecurityResult alloc] initWithIsSecureNetwork:YES
-                                                              message:@"Unable to determine network security status"];
+        return [[NetworkSecurityResult alloc] initWithIsSecureNetwork:NO
+                                                              message:@"iOS version does not support network security checks"
+                                                                code:9008];
     }
 }
 
@@ -57,7 +60,8 @@
     [NEHotspotNetwork fetchCurrentWithCompletionHandler:^(NEHotspotNetwork * _Nullable network) {
         if (!network) {
             result = [[NetworkSecurityResult alloc] initWithIsSecureNetwork:YES
-                                                                    message:@"Unable to determine network security status"];
+                                                                    message:@"Wi-Fi information is unavailable"
+                                                                      code:7003];
             dispatch_semaphore_signal(semaphore);
             return;
         }
@@ -67,11 +71,13 @@
             NEHotspotNetworkSecurityType securityType = network.securityType;
             BOOL isSecure = [self isWeakSecurityType:securityType];
             NSString *message = isSecure ?
-                @"Connected to an secure network. No additional concerns." :
+                @"Connected to a secure network. No additional concerns." :
                 @"Connected to an open/unsecured Wi-Fi network. Please consider using a secure Wi-Fi network.";
+            NSInteger code = isSecure ? 7001 : 9001;
 
             result = [[NetworkSecurityResult alloc] initWithIsSecureNetwork:isSecure
-                                                                    message:message];
+                                                                    message:message
+                                                                      code:code];
             dispatch_semaphore_signal(semaphore);
             return;
         }

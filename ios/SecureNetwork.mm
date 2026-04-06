@@ -25,14 +25,16 @@ RCT_EXPORT_METHOD(getConnectionStatus: (RCTPromiseResolveBlock)resolve
     if (!result) {
       resolve(@{
         @"isSecureNetwork": @YES,
-        @"message": @"Unable to determine network security status"
+        @"message": @"Unable to determine network security status",
+        @"code": @(7004)
       });
       return;
     }
 
     resolve(@{
       @"isSecureNetwork": @(result.isSecureNetwork),
-      @"message": result.message ?: @""
+      @"message": result.message ?: @"",
+      @"code": @(result.code)
     });
   });
 }

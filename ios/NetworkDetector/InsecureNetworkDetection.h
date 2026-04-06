@@ -6,8 +6,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL isSecureNetwork;
 @property (nonatomic, strong) NSString *message;
+@property (nonatomic, assign) NSInteger code;
 
-- (instancetype)initWithIsSecureNetwork:(BOOL)isSecureNetwork message:(NSString *)message;
+- (instancetype)initWithIsSecureNetwork:(BOOL)isSecureNetwork message:(NSString *)message code:(NSInteger)code;
 
 @end
 
