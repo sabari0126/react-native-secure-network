@@ -11,7 +11,6 @@ import android.net.NetworkRequest
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.securenetwork.utils.NetworkResult
@@ -67,8 +66,6 @@ class WifiSecurityChecker(private val context: Context) {
 
       val result = if (currentNetwork != null) {
         val caps = currentNetwork.capabilities.uppercase()
-
-        Log.e("Checking network",caps);
 
         when {
           checkOpenNetwork(caps) -> NetworkResult.WIFI_UNSECURED_OPEN
