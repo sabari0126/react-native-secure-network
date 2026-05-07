@@ -34,6 +34,7 @@ class WifiSecurityChecker(private val context: Context) {
     const val WPA = "WPA"
     const val WPA2 = "WPA2"
     const val WPA3 = "WPA3"
+    const val SAE = "SAE"
   }
 
   fun getNetworkStatus(callback: (NetworkResult) -> Unit) {
@@ -68,7 +69,7 @@ class WifiSecurityChecker(private val context: Context) {
 
         when {
           checkOpenNetwork(caps) -> NetworkResult.WIFI_UNSECURED_OPEN
-          has(caps, WPA2) || has(caps, WPA3) -> NetworkResult.WIFI_SECURE_NETWORK
+          has(caps, WPA2) || has(caps, WPA3) || has(caps, SAE) -> NetworkResult.WIFI_SECURE_NETWORK
           has(caps, WPA) -> NetworkResult.WIFI_UNSECURED_WPA
           has(caps, WEP) -> NetworkResult.WIFI_UNSECURED_WEP
           has(caps, WPS) -> NetworkResult.WIFI_UNSECURED_WPS
@@ -138,7 +139,7 @@ class WifiSecurityChecker(private val context: Context) {
   }
 
   private fun containsSecureProtocol(caps: String): Boolean {
-    return has(caps, WPA) || has(caps, WPA2) || has(caps, WPA3)
+    return has(caps, WPA) || has(caps, WPA2) || has(caps, WPA3) || has(caps, SAE)
   }
 
   private fun has(caps: String, keyword: String) = caps.contains(keyword)
